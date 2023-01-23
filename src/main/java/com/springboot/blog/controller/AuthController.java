@@ -8,6 +8,8 @@ import com.springboot.blog.entity.Users;
 import com.springboot.blog.repository.RoleRepository;
 import com.springboot.blog.repository.UsersRepository;
 import com.springboot.blog.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
+@Api(value = "Auth controller exposes siginin and signup REST APIs")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -44,14 +47,15 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+    @ApiOperation(value = "REST API to Register or Signup user to Blog app")
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> handleSignIn(@RequestBody LogInDto logInDto){
        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDto.getUsernameOrEmail(), logInDto.getPassword()));
-        SecurityContext sc=SecurityContextHolder.getContext();
-        sc.setAuthentication(authentication);
+        //SecurityContext sc=
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //sc.setAuthentication(authentication);
         String token=tokenProvider.generateToken(authentication);
-        UserDetails userDetails= (UserDetails) authentication.getPrincipal();
-        System.out.println(userDetails.getPassword());
+       // UserDetails userDetails= (UserDetails) authentication.getPrincipal();
         JwtAuthResponse jwtAuthResponse=new JwtAuthResponse(token);
 
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);

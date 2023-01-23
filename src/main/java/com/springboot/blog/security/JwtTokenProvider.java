@@ -26,14 +26,17 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
+//                .signWith(secret, SignatureAlgorithm.HS512)
+//                .compact();
                 .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
+               .compact();
         return token;
     }
 
     public String getUsernameFromJWT(String token){
-        Claims claims = Jwts.parser()
-                .setSigningKey(secret)
+        Claims claims = Jwts.parserBuilder().setSigningKey(secret).build()
+//                .parser()
+//                .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -41,7 +44,8 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token){
         try{
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
+                  //  .parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         }catch (SignatureException ex){
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT signature");

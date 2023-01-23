@@ -21,9 +21,15 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
     private static final long serialVersionUID = 1L;
+
     @Autowired
     private UsersRepository usersRepository;
-    @Transactional
+
+//    @Autowired
+//    public CustomUserDetailService(UsersRepository usersRepository) {
+//        this.usersRepository = usersRepository;
+//    }
+
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
         Users users=usersRepository.findUsersByUsernameOrEmail(usernameOrEmail, usernameOrEmail).orElseThrow(()->new UsernameNotFoundException("User not found"));

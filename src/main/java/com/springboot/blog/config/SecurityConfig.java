@@ -59,6 +59,11 @@ public class SecurityConfig{
                         authorize.antMatchers("/api/posts/**").permitAll()
                                 .antMatchers("/api/auth/**").permitAll()
                                 .antMatchers("/webjars/**").permitAll()
+                                .antMatchers("/v2/api-docs/**").permitAll()
+                                .antMatchers("/swagger-ui/**").permitAll()
+                                .antMatchers("/swagger-resources/**").permitAll()
+                                .antMatchers("/swagger-ui.html").permitAll()
+                                .antMatchers("/webjars/**").permitAll()
                                 .anyRequest().authenticated()
                 );
     http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
