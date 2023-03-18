@@ -1,16 +1,19 @@
 package com.springboot.blog.service;
 
-import com.springboot.blog.dto.PostContent;
-import com.springboot.blog.dto.PostDTO;
-import com.springboot.blog.entity.Post;
+import com.springboot.blog.payload.PostContent;
+import com.springboot.blog.payload.PostDTO;
 
 import java.util.List;
 
 public interface PostService {
-    public PostDTO createPostDto(PostDTO postDTO);
-    public List<PostDTO> listPostDtos();
-    public PostDTO getPosttById(Long id);
-    public PostDTO updatePostById(PostDTO postDTO, Long id);
-    public void deletePostById(Long id);
-    public PostContent getPosts(int pageNo, int pageSize);
+    PostDTO createPost(PostDTO postDto);
+
+
+    PostContent getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
+
+    PostDTO getPostById(long id);
+
+    PostDTO updatePost(PostDTO postDto, long id);
+
+    void deletePostById(long id);
 }

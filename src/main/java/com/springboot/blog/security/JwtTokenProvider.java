@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    @Value("${app.jwt-secret}")
+    @Value("${app.jwt.secret}")
     private String secret;
 
     @Value("${app.jwt-expiration-milliseconds}")
@@ -34,9 +34,10 @@ public class JwtTokenProvider {
     }
 
     public String getUsernameFromJWT(String token){
-        Claims claims = Jwts.parserBuilder().setSigningKey(secret).build()
-//                .parser()
-//                .setSigningKey(secret)
+        Claims claims = Jwts
+                //.parserBuilder().setSigningKey(secret).build()
+                .parser()
+                .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -44,8 +45,9 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token){
         try{
-            Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
-                  //  .parser().setSigningKey(secret).parseClaimsJws(token);
+            Jwts
+                    //.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
+                  .parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         }catch (SignatureException ex){
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT signature");

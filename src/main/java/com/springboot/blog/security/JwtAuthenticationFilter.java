@@ -15,33 +15,38 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    // inject dependencies
     @Autowired
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    private CustomUserDetailService customUserDetailService;
+    private CustomUserDetailsService customUserDetailsService;
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-        String token=getJWTfromRequest(request);
+        String token = getJWTfromRequest(request);
 
-            if(StringUtils.hasText(token) && tokenProvider.validateToken(token)){
-                // get username from token
-                String username = tokenProvider.getUsernameFromJWT(token);
-                // load user associated with token
-                UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+        if(StringUtils.hasText(token) && tokenProvider.validateToken(token)){
+            // get username from token
+            String username = tokenProvider.getUsernameFromJWT(token);
+            // load user associated with token
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // set spring security
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
-            filterChain.doFilter(request, response);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities()
+            );
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
+        filterChain.doFilter(request, response);
+    }
 
-
+    // Bearer <accessToken>
     private String getJWTfromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
@@ -49,4 +54,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.springboot.blog.dto;
+package com.springboot.blog.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostContent {
-    private List<PostDTO> listPostDTO;
-    private boolean isLast;
+    private List<PostDTO> content;
     private int pageNo;
     private int pageSize;
-    private long pageTotalElements;
-    private int pageTotalPages;
+    private long totalElements;
+    private int totalPages;
+    private boolean last;
 }

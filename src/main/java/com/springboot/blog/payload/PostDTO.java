@@ -1,4 +1,4 @@
-package com.springboot.blog.dto;
+package com.springboot.blog.payload;
 
 public class PostDTO {
     private Long id;

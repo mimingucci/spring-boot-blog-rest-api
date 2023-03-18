@@ -15,12 +15,12 @@ import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private ApiKey apiKey(){
         return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
     }
-
 
     private ApiInfo apiInfo(){
         return new ApiInfo(
@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 "Spring Boot Blog REST API Documentation",
                 "1",
                 "Terms of service",
-                new Contact("Vu Nguyen Tien", "", "gtvvunguye@gmail.com"),
+                new Contact("Nguyen Tien Vu", "", "gtvvunguye@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList()

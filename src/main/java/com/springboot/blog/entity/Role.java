@@ -7,14 +7,18 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@Entity
-@Table(name = "roles")
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-}
+
+    @Setter
+    @Getter
+    @Entity
+    @Table(name = "roles")
+    public class Role {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private long id;
+
+        @Column(length = 60)
+        private String name;
+    }
+
